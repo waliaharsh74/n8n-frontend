@@ -46,6 +46,7 @@ export function WorkflowToolbar() {
   const [logsDialogOpen, setLogsDialogOpen] = useState(false)
   const [workflowName, setWorkflowName] = useState(currentWorkflow?.name || "")
   const [workflowDescription, setWorkflowDescription] = useState(currentWorkflow?.description || "")
+  const [workflowOutputs, setWorkflowOutputs] = useState(currentWorkflow?.outputs || 1)
 
   const handleSave = () => {
     // Get current nodes and edges from the canvas
@@ -53,7 +54,7 @@ export function WorkflowToolbar() {
     const nodes: any[] = []
     const edges: any[] = []
 
-    saveWorkflow(workflowName, workflowDescription, nodes, edges)
+    saveWorkflow(workflowName, workflowDescription, nodes, edges,workflowOutputs)
     setSaveDialogOpen(false)
   }
 
@@ -62,6 +63,7 @@ export function WorkflowToolbar() {
     if (workflow) {
       setWorkflowName(workflow.name)
       setWorkflowDescription(workflow.description)
+      setWorkflowOutputs(workflow?.outputs)
       setLoadDialogOpen(false)
     }
   }

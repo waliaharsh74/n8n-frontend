@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import type { Node } from "@xyflow/react"
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card"

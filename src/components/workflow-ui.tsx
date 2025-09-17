@@ -1,31 +1,22 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import './App.css'
 import ReactFlow, {
   addEdge,
   Background,
   Controls,
-  
 
   Handle,
-  
+
   Position,
   useEdgesState,
   useNodesState,
   MarkerType,
-  
 } from "reactflow";
-import type {
-  Connection,
+import type{  Connection,
   Edge,
-  NodeProps,
-  OnConnect,
-  Node,
-} from "reactflow";
+  Node,  NodeProps,
+  OnConnect,} from "reactflow";
 import "reactflow/dist/style.css";
 import classNames from "classnames";
-import Home from "./components/Home";
-import FormBuilder from "./components/FormBuilder";
-import Flow from "./Dummy";
 
 /** ---------- Types ---------- */
 type NodeKind =
@@ -136,7 +127,7 @@ const palette: { group: "Triggers" | "Actions" | "Logic"; label: string; type: N
 ];
 
 /** ---------- App ---------- */
-export default function App() {
+export default function WorkFlowUI() {
   const initial = loadLocal() ?? { nodes: [], edges: [] };
 
   const [nodes, setNodes, onNodesChange] = useNodesState<AnyData>(initial.nodes);
@@ -217,150 +208,146 @@ export default function App() {
   const showEmpty = nodes.length === 0;
 
   return (
-    // <div style={{ height: "100vh", width: "100vw", display: "grid", gridTemplateColumns: "260px 1fr 300px" }}>
-    //   {/* LEFT PALETTE */}
-    //   <aside style={{ borderRight: "1px solid #eee", padding: 12, overflowY: "auto" }}>
-    //     <div className="flex items-center justify-between mb-2">
-    //       <h3 style={{ fontWeight: 700 }}>Steps</h3>
-    //       <button onClick={() => setOpenAdd((v) => !v)} className="px-2 py-1 text-sm border rounded">
-    //         +
-    //       </button>
-    //     </div>
+    <div style={{ height: "100vh", width: "100vw", display: "grid", gridTemplateColumns: "260px 1fr 300px" }}>
+      {/* LEFT PALETTE */}
+      <aside style={{ borderRight: "1px solid #eee", padding: 12, overflowY: "auto" }}>
+        <div className="flex items-center justify-between mb-2">
+          <h3 style={{ fontWeight: 700 }}>Steps</h3>
+          <button onClick={() => setOpenAdd((v) => !v)} className="px-2 py-1 text-sm border rounded">
+            +
+          </button>
+        </div>
 
-    //     {openAdd && (
-    //       <div style={{ border: "1px solid #eee", borderRadius: 8, padding: 8, marginBottom: 8 }}>
-    //         {(["Triggers", "Actions", "Logic"] as const).map((group) => (
-    //           <div key={group} style={{ marginBottom: 8 }}>
-    //             <div style={{ fontSize: 12, opacity: 0.7, marginBottom: 4 }}>{group}</div>
-    //             {palette
-    //               .filter((p) => p.group === group)
-    //               .map((p) => (
-    //                 <button
-    //                   key={p.type}
-    //                   onClick={() => addNode(p.type)}
-    //                   className="block w-full text-left text-sm px-2 py-1 hover:bg-gray-50 rounded"
-    //                   style={{ marginBottom: 4 }}
-    //                 >
-    //                   {p.label}
-    //                 </button>
-    //               ))}
-    //           </div>
-    //         ))}
-    //       </div>
-    //     )}
+        {openAdd && (
+          <div style={{ border: "1px solid #eee", borderRadius: 8, padding: 8, marginBottom: 8 }}>
+            {(["Triggers", "Actions", "Logic"] as const).map((group) => (
+              <div key={group} style={{ marginBottom: 8 }}>
+                <div style={{ fontSize: 12, opacity: 0.7, marginBottom: 4 }}>{group}</div>
+                {palette
+                  .filter((p) => p.group === group)
+                  .map((p) => (
+                    <button
+                      key={p.type}
+                      onClick={() => addNode(p.type)}
+                      className="block w-full text-left text-sm px-2 py-1 hover:bg-gray-50 rounded"
+                      style={{ marginBottom: 4 }}
+                    >
+                      {p.label}
+                    </button>
+                  ))}
+              </div>
+            ))}
+          </div>
+        )}
 
-    //     <div style={{ fontSize: 12, opacity: 0.7 }}>
-    //       Tip: connect from IF to create <b>true/false</b> branches.
-    //     </div>
-    //   </aside>
+        <div style={{ fontSize: 12, opacity: 0.7 }}>
+          Tip: connect from IF to create <b>true/false</b> branches.
+        </div>
+      </aside>
 
-    //   {/* CANVAS */}
-    //   <main>
-    //     <ReactFlow
-    //       nodes={nodes}
-    //       edges={edges}
-    //       onNodesChange={onNodesChange}
-    //       onEdgesChange={onEdgesChange}
-    //       onConnect={onConnect}
-    //       nodeTypes={nodeTypes}
-    //       onSelectionChange={onSelectionChange}
-    //       fitView
-    //     >
-    //       <Background />
-    //       <Controls />
-    //     </ReactFlow>
+      {/* CANVAS */}
+      <main>
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          nodeTypes={nodeTypes}
+          onSelectionChange={onSelectionChange}
+          fitView
+        >
+          <Background />
+          <Controls />
+        </ReactFlow>
 
-    //     {showEmpty && (
-    //       <div
-    //         style={{
-    //           position: "absolute",
-    //           inset: 0,
-    //           display: "grid",
-    //           placeItems: "center",
-    //           pointerEvents: "none",
-    //         }}
-    //       >
-    //         <div
-    //           style={{
-    //             background: "white",
-    //             border: "1px dashed #ccc",
-    //             padding: 16,
-    //             borderRadius: 12,
-    //             pointerEvents: "auto",
-    //           }}
-    //         >
-    //           <div style={{ fontWeight: 700, marginBottom: 6 }}>Add first step…</div>
-    //           <div style={{ fontSize: 12, opacity: 0.7 }}>Click the <b>+</b> on the left.</div>
-    //         </div>
-    //       </div>
-    //     )}
-    //   </main>
+        {showEmpty && (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "grid",
+              placeItems: "center",
+              pointerEvents: "none",
+            }}
+          >
+            <div
+              style={{
+                background: "white",
+                border: "1px dashed #ccc",
+                padding: 16,
+                borderRadius: 12,
+                pointerEvents: "auto",
+              }}
+            >
+              <div style={{ fontWeight: 700, marginBottom: 6 }}>Add first step…</div>
+              <div style={{ fontSize: 12, opacity: 0.7 }}>Click the <b>+</b> on the left.</div>
+            </div>
+          </div>
+        )}
+      </main>
 
-    //   {/* INSPECTOR */}
-    //   <aside style={{ borderLeft: "1px solid #eee", padding: 12 }}>
-    //     <h3 style={{ fontWeight: 700, marginBottom: 8 }}>Inspector</h3>
-    //     {!selected && <div style={{ fontSize: 12, opacity: 0.7 }}>Select a node.</div>}
-    //     {selected && (
-    //       <div style={{ display: "grid", gap: 8 }}>
-    //         <div>
-    //           <div className="text-xs opacity-70">ID</div>
-    //           <div className="text-sm">{selected.id}</div>
-    //         </div>
+      {/* INSPECTOR */}
+      <aside style={{ borderLeft: "1px solid #eee", padding: 12 }}>
+        <h3 style={{ fontWeight: 700, marginBottom: 8 }}>Inspector</h3>
+        {!selected && <div style={{ fontSize: 12, opacity: 0.7 }}>Select a node.</div>}
+        {selected && (
+          <div style={{ display: "grid", gap: 8 }}>
+            <div>
+              <div className="text-xs opacity-70">ID</div>
+              <div className="text-sm">{selected.id}</div>
+            </div>
 
-    //         <div>
-    //           <div className="text-xs opacity-70">Type</div>
-    //           <div className="text-sm">{selected.type}</div>
-    //         </div>
+            <div>
+              <div className="text-xs opacity-70">Type</div>
+              <div className="text-sm">{selected.type}</div>
+            </div>
 
-    //         <label className="text-sm">
-    //           Label
-    //           <input
-    //             className="block w-full border rounded px-2 py-1"
-    //             value={selected.data?.label ?? ""}
-    //             onChange={(e) => updateSelected({ label: e.target.value })}
-    //           />
-    //         </label>
+            <label className="text-sm">
+              Label
+              <input
+                className="block w-full border rounded px-2 py-1"
+                value={selected.data?.label ?? ""}
+                onChange={(e) => updateSelected({ label: e.target.value })}
+              />
+            </label>
 
-    //         {/* Minimal per-type fields */}
-    //         {selected.type === "action.email" && (
-    //           <>
-    //             <label className="text-sm">
-    //               To
-    //               <input
-    //                 className="block w-full border rounded px-2 py-1"
-    //                 value={selected.data?.to ?? ""}
-    //                 onChange={(e) => updateSelected({ to: e.target.value })}
-    //               />
-    //             </label>
-    //             <label className="text-sm">
-    //               Subject
-    //               <input
-    //                 className="block w-full border rounded px-2 py-1"
-    //                 value={selected.data?.subject ?? ""}
-    //                 onChange={(e) => updateSelected({ subject: e.target.value })}
-    //               />
-    //             </label>
-    //           </>
-    //         )}
+            {/* Minimal per-type fields */}
+            {selected.type === "action.email" && (
+              <>
+                <label className="text-sm">
+                  To
+                  <input
+                    className="block w-full border rounded px-2 py-1"
+                    value={selected.data?.to ?? ""}
+                    onChange={(e) => updateSelected({ to: e.target.value })}
+                  />
+                </label>
+                <label className="text-sm">
+                  Subject
+                  <input
+                    className="block w-full border rounded px-2 py-1"
+                    value={selected.data?.subject ?? ""}
+                    onChange={(e) => updateSelected({ subject: e.target.value })}
+                  />
+                </label>
+              </>
+            )}
 
-    //         {selected.type === "logic.if" && (
-    //           <label className="text-sm">
-    //             Expression (read-only here)
-    //             <input
-    //               className="block w-full border rounded px-2 py-1"
-    //               placeholder={`e.g., ctx.user.role === "manager"`}
-    //               value={selected.data?.expr ?? ""}
-    //               onChange={(e) => updateSelected({ expr: e.target.value })}
-    //             />
-    //           </label>
-    //         )}
-    //       </div>
-    //     )}
-    //   </aside>
-    // </div>
-
-    // <Home/> 
-    // <FormBuilder/>
-    <Flow/>
+            {selected.type === "logic.if" && (
+              <label className="text-sm">
+                Expression (read-only here)
+                <input
+                  className="block w-full border rounded px-2 py-1"
+                  placeholder={`e.g., ctx.user.role === "manager"`}
+                  value={selected.data?.expr ?? ""}
+                  onChange={(e) => updateSelected({ expr: e.target.value })}
+                />
+              </label>
+            )}
+          </div>
+        )}
+      </aside>
+    </div>
   );
 }

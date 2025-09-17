@@ -9,6 +9,7 @@ interface Workflow {
   description: string
   nodes: Node[]
   edges: Edge[]
+  outputs:number
   createdAt: string
   updatedAt: string
 }
@@ -28,7 +29,7 @@ interface WorkflowContextType {
   workflows: Workflow[]
   workflowRuns: WorkflowRun[]
   isRunning: boolean
-  saveWorkflow: (name: string, description: string, nodes: Node[], edges: Edge[]) => void
+  saveWorkflow: (name: string, description: string, nodes: Node[], edges: Edge[],outputs:number) => void
   loadWorkflow: (workflowId: string) => Workflow | null
   deleteWorkflow: (workflowId: string) => void
   runWorkflow: (workflowId: string) => void
@@ -52,7 +53,7 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
   const [isRunning, setIsRunning] = useState(false)
 
   const saveWorkflow = useCallback(
-    (name: string, description: string, nodes: Node[], edges: Edge[]) => {
+    (name: string, description: string, nodes: Node[], edges: Edge[],outputs:number) => {
       const now = new Date().toISOString()
       const workflow: Workflow = {
         id: currentWorkflow?.id || `workflow-${Date.now()}`,
@@ -60,6 +61,7 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
         description,
         nodes,
         edges,
+        outputs,
         createdAt: currentWorkflow?.createdAt || now,
         updatedAt: now,
       }

@@ -11,7 +11,8 @@ interface NodeTemplate {
   type: "trigger" | "action" | "logic"
   nodeType: string
   description: string
-  icon: React.ReactNode
+  icon: React.ReactNode,
+  outputs:number
 }
 
 const nodeTemplates: NodeTemplate[] = [
@@ -23,6 +24,7 @@ const nodeTemplates: NodeTemplate[] = [
     nodeType: "manual",
     description: "Manually start the workflow",
     icon: <Play className="h-4 w-4" />,
+    outputs:1
   },
   {
     id: "cron-trigger",
@@ -31,6 +33,7 @@ const nodeTemplates: NodeTemplate[] = [
     nodeType: "cron",
     description: "Schedule workflow execution",
     icon: <Clock className="h-4 w-4" />,
+      outputs:1
   },
   {
     id: "webhook-trigger",
@@ -39,6 +42,7 @@ const nodeTemplates: NodeTemplate[] = [
     nodeType: "webhook",
     description: "Trigger via HTTP webhook",
     icon: <Webhook className="h-4 w-4" />,
+      outputs:1
   },
   // Actions
   {
@@ -48,6 +52,7 @@ const nodeTemplates: NodeTemplate[] = [
     nodeType: "telegram",
     description: "Send message to Telegram",
     icon: <Send className="h-4 w-4" />,
+      outputs:1
   },
   {
     id: "email-action",
@@ -56,6 +61,7 @@ const nodeTemplates: NodeTemplate[] = [
     nodeType: "email",
     description: "Send email message",
     icon: <Mail className="h-4 w-4" />,
+      outputs:1
   },
   {
     id: "llm-action",
@@ -64,6 +70,7 @@ const nodeTemplates: NodeTemplate[] = [
     nodeType: "llm",
     description: "Query language model",
     icon: <MessageSquare className="h-4 w-4" />,
+      outputs:1
   },
   // Logic
   {
@@ -73,6 +80,7 @@ const nodeTemplates: NodeTemplate[] = [
     nodeType: "if",
     description: "Conditional branching",
     icon: <GitBranch className="h-4 w-4" />,
+    outputs:2
   },
   {
     id: "loop-logic",
@@ -81,6 +89,8 @@ const nodeTemplates: NodeTemplate[] = [
     nodeType: "loop",
     description: "Repeat actions",
     icon: <Repeat className="h-4 w-4" />,
+      outputs:1
+   
   },
 ]
 

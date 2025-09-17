@@ -1,4 +1,3 @@
-"use client"
 
 import { Handle, Position, type NodeProps } from "@xyflow/react"
 import { Card } from "@/components/ui/card"
@@ -9,8 +8,11 @@ interface WorkflowNodeData {
   label: string
   type: "trigger" | "action" | "logic"
   nodeType: string
-  description?: string
+  description?: string,
+  outputs?:number
 }
+type AnyData = Record<string, WorkflowNodeData>;
+
 
 const getNodeIcon = (type: string, nodeType: string) => {
   if (type === "trigger") {
@@ -67,7 +69,8 @@ const getNodeColor = (type: string) => {
 }
 
 export function WorkflowNode({ data }: NodeProps<WorkflowNodeData>) {
-  const { label, type, nodeType, description } = data
+  const { label, type, nodeType, description,outputs } = data 
+  console.log(data)
 
   return (
     <Card className="min-w-[200px] border-2 hover:border-ring transition-colors">
@@ -84,11 +87,23 @@ export function WorkflowNode({ data }: NodeProps<WorkflowNodeData>) {
         {description && <p className="text-xs text-muted-foreground">{description}</p>}
       </div>
 
-      {/* Connection handles */}
+    
       {type !== "trigger" && (
         <Handle type="target" position={Position.Top} className="w-3 h-3 bg-border border-2 border-background" />
       )}
-      <Handle type="source" position={Position.Bottom} className="w-3 h-3 bg-border border-2 border-background" />
+      {Array.from({ length: outputs? outputs:2 }).map((_, i) => (
+        
+        <Handle
+          key={i}
+          type="source"
+          position={Position.Bottom}
+          id={String(i)}
+          style={{ right: 22 + i * 16 }}
+          className="w-3 h-3 bg-border border-2 border-background"
+        />
+      ))}
+
+      {/* <Handle type="source" position={Position.Bottom} className="w-3 h-3 bg-border border-2 border-background" /> */}
     </Card>
   )
 }

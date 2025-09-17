@@ -16,6 +16,9 @@ import {
   type Node,
   BackgroundVariant,
   type NodeMouseHandler,
+  getIncomers,
+  getOutgoers,
+  getConnectedEdges,
 } from "@xyflow/react"
 import "@xyflow/react/dist/style.css"
 
@@ -23,11 +26,26 @@ import { WorkflowNode } from "./workflow-node"
 import { NodePalette } from "./node-palette"
 import { NodeInspector } from "./node-inspector"
 import { useWorkflow } from "./workflow-provider"
+import type { EdgeBase } from "node_modules/@xyflow/system/dist/esm/types"
 
 const nodeTypes = {
   workflow: WorkflowNode,
 }
-
+type NodeType={
+    id:string,
+    position:{
+        x:number,
+        y:number
+    },
+    data:{
+        label:string
+    }
+}
+type EdgeType={
+    id:string,
+    source:string,
+    target:string
+}
 const initialNodes: Node[] = [
   {
     id: "1",
@@ -38,6 +56,7 @@ const initialNodes: Node[] = [
       type: "trigger",
       nodeType: "manual",
       description: "Manually trigger this workflow",
+      outputs:1
     },
   },
 ]
@@ -93,6 +112,9 @@ export function WorkflowCanvas() {
     event.dataTransfer.dropEffect = "move"
   }, [])
 
+  
+   
+
   const onDrop = useCallback(
     (event: React.DragEvent) => {
       event.preventDefault()
@@ -126,6 +148,7 @@ export function WorkflowCanvas() {
     <div className="flex h-full">
       <NodePalette />
       <div className="flex-1 relative">
+        
         <ReactFlow
           nodes={nodes}
           edges={edges}
